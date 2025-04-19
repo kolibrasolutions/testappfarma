@@ -1,89 +1,38 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import React from 'react';
+import { LegalDisclaimer } from '@/components/compliance/LegalDisclaimer';
+import { RegulatoryUpdateCheck } from '@/components/compliance/RegulatoryUpdateCheck';
 
-export default function HomePage() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Simular carregamento
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Carregando...</p>
-        </div>
-      </div>
-    );
-  }
-
+export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
-            Farmácia Training App
-          </h1>
-          <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
-            Plataforma de treinamento para profissionais de farmácia
-          </p>
-        </div>
-
-        <div className="mt-12">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg font-medium text-gray-900">Área de Treinamento</h3>
-                <p className="mt-2 text-sm text-gray-500">
-                  Acesse flashcards, quizzes e simulações para aprimorar seus conhecimentos.
-                </p>
-                <div className="mt-4">
-                  <Link href="/treinamento/flashcards" className="text-sm font-medium text-blue-600 hover:text-blue-500">
-                    Acessar treinamentos <span aria-hidden="true">&rarr;</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg font-medium text-gray-900">Consulta Rápida</h3>
-                <p className="mt-2 text-sm text-gray-500">
-                  Consulte informações sobre medicamentos e sintomas para atendimento.
-                </p>
-                <div className="mt-4">
-                  <Link href="/consulta/medicamentos" className="text-sm font-medium text-blue-600 hover:text-blue-500">
-                    Fazer consulta <span aria-hidden="true">&rarr;</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg font-medium text-gray-900">Área Administrativa</h3>
-                <p className="mt-2 text-sm text-gray-500">
-                  Gerencie farmácias, usuários e acompanhe o progresso dos treinamentos.
-                </p>
-                <div className="mt-4">
-                  <Link href="/login" className="text-sm font-medium text-blue-600 hover:text-blue-500">
-                    Fazer login <span aria-hidden="true">&rarr;</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
+        <h1 className="text-4xl font-bold text-center mb-8">
+          Sistema de Treinamento de Balconistas de Farmácia
+        </h1>
+        
+        <p className="text-center mb-12">
+          Plataforma educativa para capacitação de balconistas sobre Medicamentos Isentos de Prescrição (MIPs)
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold mb-4">Módulos de Treinamento</h2>
+            <p>Acesse conteúdos organizados por categorias terapêuticas e aprenda sobre MIPs.</p>
+          </div>
+          
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold mb-4">Avaliações e Certificados</h2>
+            <p>Teste seus conhecimentos e obtenha certificados de conclusão.</p>
           </div>
         </div>
+        
+        <div className="space-y-4 mt-8">
+          <LegalDisclaimer />
+          <RegulatoryUpdateCheck lastUpdateDate={new Date(2025, 3, 15)} />
+        </div>
       </div>
-    </div>
+    </main>
   );
 }

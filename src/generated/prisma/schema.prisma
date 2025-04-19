@@ -1,0 +1,169 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo de Usuário
+model User {
+  id         String    @id @default(uuid())
+  name       String
+  email      String    @unique
+  password   String
+  role       Role      @default(BALCONISTA)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  farmaciaId String?
+  farmacia   Farmacia? @relation(fields: [farmaciaId], references: [id])
+
+  // Relações
+  progressos   Progresso[]
+  resultados   ResultadoAvaliacao[]
+  certificados Certificado[]
+}
+
+enum Role {
+  ADMIN
+  FARMACEUTICO
+  BALCONISTA
+}
+
+// Modelo de Farmácia
+model Farmacia {
+  id        String   @id @default(uuid())
+  nome      String
+  cnpj      String   @unique
+  endereco  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relações
+  usuarios User[]
+}
+
+// Modelo de Categoria
+model Categoria {
+  id        String   @id @default(cuid())
+  nome      String
+  descricao String
+  ordem     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relações
+  modulos      Modulo[]
+  medicamentos Medicamento[]
+}
+
+// Modelo de Módulo
+model Modulo {
+  id          String    @id @default(cuid())
+  titulo      String
+  descricao   String
+  conteudo    String    @db.Text
+  ordem       Int
+  versao      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  categoriaId String
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+
+  // Relações
+  progressos Progresso[]
+  avaliacoes Avaliacao[]
+}
+
+// Modelo de Medicamento
+model Medicamento {
+  id                String    @id @default(cuid())
+  nome              String
+  principioAtivo    String
+  formaFarmaceutica String
+  concentracao      String
+  indicacoes        String?   @db.Text
+  contraindicacoes  String?   @db.Text
+  efeitosAdversos   String?   @db.Text
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  categoriaId       String
+  categoria         Categoria @relation(fields: [categoriaId], references: [id])
+}
+
+// Modelo de Progresso
+model Progresso {
+  id           String   @id @default(cuid())
+  progresso    Int      @default(0)
+  concluido    Boolean  @default(false)
+  ultimoAcesso DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  moduloId     String
+  modulo       Modulo   @relation(fields: [moduloId], references: [id])
+
+  @@unique([userId, moduloId])
+}
+
+// Modelo de Avaliação
+model Avaliacao {
+  id        String   @id @default(cuid())
+  titulo    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  moduloId  String
+  modulo    Modulo   @relation(fields: [moduloId], references: [id])
+
+  // Relações
+  questoes   Questao[]
+  resultados ResultadoAvaliacao[]
+}
+
+// Modelo de Questão
+model Questao {
+  id              String    @id @default(cuid())
+  enunciado       String
+  opcoes          String[]
+  respostaCorreta Int
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  avaliacaoId     String
+  avaliacao       Avaliacao @relation(fields: [avaliacaoId], references: [id])
+}
+
+// Modelo de Resultado de Avaliação
+model ResultadoAvaliacao {
+  id             String    @id @default(cuid())
+  respostas      Int[]
+  pontuacao      Int
+  aprovado       Boolean
+  dataRealizacao DateTime  @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  userId         String
+  user           User      @relation(fields: [userId], references: [id])
+  avaliacaoId    String
+  avaliacao      Avaliacao @relation(fields: [avaliacaoId], references: [id])
+
+  @@unique([userId, avaliacaoId])
+}
+
+// Modelo de Certificado
+model Certificado {
+  id           String   @id @default(cuid())
+  titulo       String
+  codigo       String   @unique
+  dataEmissao  DateTime @default(now())
+  dataValidade DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+}
