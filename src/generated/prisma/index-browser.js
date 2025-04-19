@@ -224,6 +224,41 @@ exports.Prisma.CertificadoScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.ArquivoScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  caminho: 'caminho',
+  tipo: 'tipo',
+  tamanho: 'tamanho',
+  entidadeTipo: 'entidadeTipo',
+  entidadeId: 'entidadeId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NotificacaoScalarFieldEnum = {
+  id: 'id',
+  titulo: 'titulo',
+  mensagem: 'mensagem',
+  lida: 'lida',
+  tipo: 'tipo',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
+exports.Prisma.AtualizacaoRegulatoriaScalarFieldEnum = {
+  id: 'id',
+  titulo: 'titulo',
+  descricao: 'descricao',
+  fonte: 'fonte',
+  dataPublicacao: 'dataPublicacao',
+  dataVigencia: 'dataVigencia',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -254,7 +289,10 @@ exports.Prisma.ModelName = {
   Avaliacao: 'Avaliacao',
   Questao: 'Questao',
   ResultadoAvaliacao: 'ResultadoAvaliacao',
-  Certificado: 'Certificado'
+  Certificado: 'Certificado',
+  Arquivo: 'Arquivo',
+  Notificacao: 'Notificacao',
+  AtualizacaoRegulatoria: 'AtualizacaoRegulatoria'
 };
 
 /**

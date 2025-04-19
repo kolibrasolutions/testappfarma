@@ -27,6 +27,7 @@ model User {
   progressos   Progresso[]
   resultados   ResultadoAvaliacao[]
   certificados Certificado[]
+  notificacoes Notificacao[]
 }
 
 enum Role {
@@ -166,4 +167,43 @@ model Certificado {
   updatedAt    DateTime @updatedAt
   userId       String
   user         User     @relation(fields: [userId], references: [id])
+}
+
+// Modelo de Arquivo
+model Arquivo {
+  id           String   @id @default(cuid())
+  nome         String
+  caminho      String
+  tipo         String
+  tamanho      Int
+  entidadeTipo String // 'modulo', 'medicamento', 'categoria', etc.
+  entidadeId   String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Modelo de Notificação
+model Notificacao {
+  id        String   @id @default(cuid())
+  titulo    String
+  mensagem  String
+  lida      Boolean  @default(false)
+  tipo      String // 'sistema', 'atualizacao', 'certificado', etc.
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+// Modelo de Atualização Regulatória
+model AtualizacaoRegulatoria {
+  id             String    @id @default(cuid())
+  titulo         String
+  descricao      String
+  fonte          String
+  dataPublicacao DateTime
+  dataVigencia   DateTime?
+  status         String // 'pendente', 'vigente', 'arquivada'
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }
